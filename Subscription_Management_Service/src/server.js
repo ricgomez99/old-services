@@ -1,3 +1,4 @@
 import { initApp } from './app.js'
+import { PaymentsModel } from './models/PaymentsModel.js'
 
-initApp()
+initApp({ paymentsModel: PaymentsModel })

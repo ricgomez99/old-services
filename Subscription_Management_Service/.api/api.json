@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "treli",
+      "source": "@treli/v1.0#trdulrh2xlzx4ixmc",
+      "integrity": "sha512-1OPqe5g7R1ETU3ENqw2iTllebjtn3uy/BwdVqTtoP6g4yEjbUINPZgbh+NkPtIiPH2iLQ7sSgfWZEzEcoR+5zQ==",
+      "installerVersion": "6.1.2"
+    }
+  ]
+}

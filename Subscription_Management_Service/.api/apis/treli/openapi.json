@@ -1,0 +1,2380 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Treli API V1",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://treli.co/wp-json/api"
+    }
+  ],
+  "x-readme": {
+    "proxy-enabled": true
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Suscripciones"
+    },
+    {
+      "name": "Productos"
+    }
+  ],
+  "paths": {
+    "/subscriptions/create": {
+      "post": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "summary": "Crea una suscripción",
+        "description": "Crea una suscripción",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "billing_address",
+                  "products",
+                  "payment"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Correo electrónico de tu cliente"
+                  },
+                  "billing_address": {
+                    "type": "object",
+                    "description": "Dirección de facturación de tu cliente",
+                    "properties": {
+                      "first_name": {
+                        "type": "string",
+                        "description": "Nombre de facturación del cliente"
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "description": "Apellido de facturación del cliente"
+                      },
+                      "cedula": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Cédula de facturación del cliente"
+                      },
+                      "address_1": {
+                        "type": "string",
+                        "description": "Dirección principal de facturación del cliente"
+                      },
+                      "address_2": {
+                        "type": "string",
+                        "description": "Apartamento, casa, unidad, etc de facturación del cliente"
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": "Ciudad de facturación del cliente. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/colombia#ciudades)"
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": "Departamento de facturación del cliente. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/colombia#departamentos)"
+                      },
+                      "postcode": {
+                        "type": "string",
+                        "description": "Código postal de facturación del cliente"
+                      },
+                      "country": {
+                        "type": "string",
+                        "description": "País de facturación del cliente. El país debe ser enviado en código ISO alfa-2. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/general)"
+                      },
+                      "phone": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Teléfono de facturación del cliente. Debe contener 10 digitos."
+                      },
+                      "id_type": {
+                        "type": "string",
+                        "description": "Tipo de identificación del cliente. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/colombia)"
+                      },
+                      "company": {
+                        "type": "string",
+                        "description": "Compañia de facturación del cliente"
+                      }
+                    }
+                  },
+                  "block_billing_change": {
+                    "type": "boolean",
+                    "description": "Opcional, el valor predeterminado es false. Decide si el pagador puede modificar la información de facturación en la página de pago de Treli. Si es true, el pagador no podra modificar su información de facturación en la página de pago."
+                  },
+                  "requires_shipping": {
+                    "type": "boolean",
+                    "description": "Opcional, el valor predeterminado es false. Decide si la suscripción requiere envío o no"
+                  },
+                  "manual_payment": {
+                    "type": "boolean",
+                    "description": "Decide si el pago de la suscripción es manual no. Si el pago es manual (true), Este endpoint te retorna un link de pago y Treli envia un correo electrónico a tu cliente para que complete el pago manualmente."
+                  },
+                  "shipping_address": {
+                    "type": "object",
+                    "description": "Dirección de envío de tu cliente",
+                    "properties": {
+                      "first_name": {
+                        "type": "string",
+                        "description": "Nombre de facturación del cliente"
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "description": "Apellido de facturación del cliente"
+                      },
+                      "address_1": {
+                        "type": "string",
+                        "description": "Dirección principal de facturación del cliente"
+                      },
+                      "address_2": {
+                        "type": "string",
+                        "description": "Apartamento, casa, unidad, etc de facturación del cliente"
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": "Ciudad de facturación del cliente"
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": "Departamento de facturación del cliente"
+                      },
+                      "postcode": {
+                        "type": "string",
+                        "description": "Código postal de facturación del cliente"
+                      },
+                      "country": {
+                        "type": "string",
+                        "description": "País de facturación del cliente. El país debe ser enviado en código ISO alfa-2. https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
+                      }
+                    }
+                  },
+                  "products": {
+                    "type": "array",
+                    "description": "Plan que se cobrara en la suscripción",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "id del plan. Lo puedes obtener consultando el endpoint *[plans](https://treli.readme.io/reference/get_plans)*"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Cantidad del producto."
+                        },
+                        "subscription_period_interval": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Intervalo de la suscripción. Lo puedes obtener consultando el endpoint *[plans](https://treli.readme.io/reference/get_plans)* o puedes enviar cualquier intervalo"
+                        },
+                        "subscription_period": {
+                          "type": "string",
+                          "minimum": 1,
+                          "description": "Periodo de la suscripción. Lo puedes obtener consultando el endpoint *[plans](https://treli.readme.io/reference/get_plans)* o puedes enviar cualquier periodo"
+                        },
+                        "subscription_price": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Precio de la suscripción. Lo puedes obtener consultando el endpoint *[plans](https://treli.readme.io/reference/get_plans)* o puedes enviar cualquier precio"
+                        },
+                        "subscription_length": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Número total de pagos de esta suscripción. Lo puedes obtener consultando el endpoint *[plans](https://treli.readme.io/reference/get_plans)* o puedes enviar cualquier duración. Dejar vacío para duración indefinida."
+                        }
+                      }
+                    }
+                  },
+                  "one_time_products": {
+                    "type": "array",
+                    "description": "Productos no recurrentes que quieres cobrar en el mismo pago inicial asociado a la suscripción",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Nombre del producto"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Cantidad del producto."
+                        },
+                        "unit_price": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Precio unitario del producto"
+                        },
+                        "sku": {
+                          "type": "string",
+                          "description": "SKU o ID interno del producto"
+                        }
+                      }
+                    }
+                  },
+                  "addons": {
+                    "type": "array",
+                    "description": "Addons asociados a la suscripción",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Nombre del addon"
+                        },
+                        "unit_price": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Precio unitario del addon"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Cantidad del addon"
+                        }
+                      }
+                    }
+                  },
+                  "payment": {
+                    "type": "object",
+                    "description": "Información del pago de la suscripción",
+                    "properties": {
+                      "cardNumber": {
+                        "type": "string",
+                        "description": "Número de la tarjeta de crédito del cliente"
+                      },
+                      "month": {
+                        "type": "string",
+                        "description": "Mes de vencimiento de la tarjeta de crédito del cliente"
+                      },
+                      "year": {
+                        "type": "string",
+                        "description": "Año de vencimiento de la tarjeta de crédito del cliente. Debe tener dos dígitos. Por ejemplo, una tarjeta que vence en el año *2025*, el año de vencimiento debe ser enviado como *25*"
+                      },
+                      "cardCvc": {
+                        "type": "string",
+                        "description": "Código de seguridad de la tarjeta de crédito del cliente"
+                      },
+                      "cardtoken": {
+                        "type": "integer",
+                        "description": "ID del token de la tarjeta de crédito almacenado en Treli. Solo si el pago se realiza con un token de tarjeta de crédito. Puedes listar los tokens con el endpoint [listar tokens](https://treli.readme.io/reference/get_cards-get-tokens) y enviar la posición del token que te retorna el json."
+                      },
+                      "phone": {
+                        "type": "integer",
+                        "description": "Numero de teléfono. Solo para pagos por medio de Wompi Nequi"
+                      },
+                      "gateway": {
+                        "type": "string",
+                        "description": "ID de la pasarela de pago. Puedes consultar las pasarelas de pago habilitadas en tu cuenta aqui [aquí](https://treli.readme.io/reference/get_gateways-list). Es necesario enviar la pasarela de pago si estas creando una suscripción con un token o si tienes múltiples pasarelas de pago activas y quieres cobrar con una especifica."
+                      },
+                      "payment_method": {
+                        "type": "string",
+                        "description": "Método de pago. Valor por defecto \"card\". Puedes consultar los método de pago habilitados en tu cuenta de Treli [aquí](https://treli.readme.io/reference/get_gateways-list)."
+                      },
+                      "payer_address": {
+                        "type": "object",
+                        "description": "Dirección de facturación del pagador. Usalo cuando la dirección de facturación de la suscripción es distinta a la dirección del pagador.",
+                        "properties": {
+                          "first_name": {
+                            "type": "string",
+                            "description": "Nombre del pagador"
+                          },
+                          "last_name": {
+                            "type": "string",
+                            "description": "Apellido del pagador"
+                          },
+                          "id_type": {
+                            "type": "string",
+                            "description": "Tipo de identificación del pagador. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/colombia)"
+                          },
+                          "identification": {
+                            "type": "string",
+                            "description": "Número de identificación del pagador"
+                          },
+                          "address_1": {
+                            "type": "string",
+                            "description": "Dirección principal del pagador"
+                          },
+                          "address_2": {
+                            "type": "string",
+                            "description": "Apartamento, casa, unidad, etc del pagador"
+                          },
+                          "city": {
+                            "type": "string",
+                            "description": "Ciudad del pagador. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/colombia#ciudades)"
+                          },
+                          "state": {
+                            "type": "string",
+                            "description": "Departamento del pagador. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/colombia#departamentos)"
+                          },
+                          "country": {
+                            "type": "string",
+                            "description": "País del pagador. El país debe ser enviado en código ISO alfa-2. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/general)"
+                          },
+                          "phone": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "description": "Teléfono de facturación del pagador. Debe contener 10 digitos."
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "currency": {
+                    "type": "string",
+                    "description": "Código de la moneda en tres letras (ISO 4217). Debes tener la moneda habilitada en tu cuenta de Treli. Este campo es opcional, si envías este campo vacío, se utiliza la moneda base configurada en tu cuenta de Treli."
+                  },
+                  "coupon_code": {
+                    "type": "string",
+                    "description": "Cupón de descuento para la suscripción. Debes tener el cupón creado en tu cuenta de Treli."
+                  },
+                  "coupon_duration": {
+                    "type": "integer",
+                    "description": "Duración del cupon en número de pagos. Por ejemplo, si \"coupon_duration\" es \"3\", el cupón sera eliminado de la suscripción despues del tercer pago. Solo aplica si el cupón que estas utilizando para la suscripción es de tipo \"Descuento en porcentaje % recurrente\" o \"Descuento fijo recurrente\"."
+                  },
+                  "payment_invoicing": {
+                    "type": "string",
+                    "description": "Decide si quieres generar una factura para el pago inicial de la suscripción. \"create\" para generar una factura inmediatamente. Solo aplica si tienes habilitada la opción de generar facturas en tu proveedor contable."
+                  },
+                  "auorretencion": {
+                    "type": "string",
+                    "description": "Autorretención para la generación de la factura. Solo aplica si tienes habilitada la opción de generar facturas en tu proveedor contable. Debes envíar el ID de la autorretención de tu software contable."
+                  },
+                  "invoice_observations": {
+                    "type": "string",
+                    "description": "Comentarios u observaciones de la factura. Solo aplica si tienes habilitada la opción de generar facturas en tu proveedor contable."
+                  },
+                  "invoice_retentions": {
+                    "type": "object",
+                    "description": "Retenciones para la generación de la factura. Solo aplica si tienes habilitada la opción de generar facturas en tu proveedor contable y tienes las retenciones configuradas.",
+                    "properties": {
+                      "reteiva": {
+                        "type": "string",
+                        "description": "ID de la retención en la fuente por IVA que quieres agregar en la factura. Debes tener configuradas las rentenciones en tu cuenta de Treli."
+                      },
+                      "reteica": {
+                        "type": "string",
+                        "description": "ID de la retención en la fuente por ICA que quieres agregar en la factura. Debes tener configuradas las rentenciones en tu cuenta de Treli."
+                      },
+                      "retefte": {
+                        "type": "string",
+                        "description": "ID de la retención en la fuente por el impuesto de renta que quieres agregar en la factura. Debes tener configuradas las rentenciones en tu cuenta de Treli."
+                      }
+                    }
+                  },
+                  "meta_data": {
+                    "type": "array",
+                    "description": "Lista de meta data asociada a la suscripción",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "description": "Key de la meta data"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Valor de la meta data"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "billing_address": {
+                    "first_name": "Nombre",
+                    "last_name": "Apellido",
+                    "cedula": 123456789,
+                    "address_1": "Cra 1 1 1",
+                    "city": "Barranquilla",
+                    "state": "ATL",
+                    "postcode": 80001,
+                    "country": "CO",
+                    "phone": 3991111111
+                  },
+                  "products": [
+                    {
+                      "id": "2026",
+                      "quantity": "1",
+                      "subscription_period_interval": "1",
+                      "subscription_period": "month",
+                      "subscription_price": "150000"
+                    }
+                  ],
+                  "addons": [
+                    {
+                      "name": "Nombre addon",
+                      "unit_price": 10000,
+                      "quantity": 1
+                    }
+                  ],
+                  "payment": {
+                    "cardNumber": "4575623182290326",
+                    "year": "25",
+                    "month": "12",
+                    "cardCvc": "123",
+                    "cardtoken": 0,
+                    "phone": 3991111111,
+                    "gateway": "wompidirect",
+                    "payment_method": "card"
+                  },
+                  "email": "test@treli.co",
+                  "requires_shipping": false,
+                  "manual_payment": false,
+                  "block_billing_change": false,
+                  "currency": "COP",
+                  "meta_data": [
+                    {
+                      "key": "user_id",
+                      "value": "36"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/update": {
+      "post": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "summary": "Actualizar una suscripción",
+        "description": "Actualiza una suscripción",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "subscription_id"
+                ],
+                "properties": {
+                  "subscription_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Id de la suscripción que quieres actualizar"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Correo electrónico de tu cliente"
+                  },
+                  "billing_address": {
+                    "type": "object",
+                    "description": "Dirección de facturación de tu cliente",
+                    "properties": {
+                      "first_name": {
+                        "type": "string",
+                        "description": "Nombre de facturación del cliente"
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "description": "Apellido de facturación del cliente"
+                      },
+                      "cedula": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Cédula de facturación del cliente"
+                      },
+                      "address_1": {
+                        "type": "string",
+                        "description": "Dirección principal de facturación del cliente"
+                      },
+                      "address_2": {
+                        "type": "string",
+                        "description": "Apartamento, casa, unidad, etc de facturación del cliente"
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": "Ciudad de facturación del cliente"
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": "Departamento de facturación del cliente"
+                      },
+                      "postcode": {
+                        "type": "string",
+                        "description": "Código postal de facturación del cliente"
+                      },
+                      "country": {
+                        "type": "string",
+                        "description": "País de facturación del cliente. El país debe ser enviado en código ISO alfa-2. https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
+                      },
+                      "phone": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Teléfono de facturación del cliente. Debe contener 10 digitos."
+                      }
+                    }
+                  },
+                  "requires_shipping": {
+                    "type": "boolean",
+                    "description": "Decide si la suscripción requiere envío o no"
+                  },
+                  "shipping_address": {
+                    "type": "object",
+                    "description": "Dirección de envío de tu cliente",
+                    "properties": {
+                      "first_name": {
+                        "type": "string",
+                        "description": "Nombre de facturación del cliente"
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "description": "Apellido de facturación del cliente"
+                      },
+                      "address_1": {
+                        "type": "string",
+                        "description": "Dirección principal de facturación del cliente"
+                      },
+                      "address_2": {
+                        "type": "string",
+                        "description": "Apartamento, casa, unidad, etc de facturación del cliente"
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": "Ciudad de facturación del cliente"
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": "Departamento de facturación del cliente"
+                      },
+                      "postcode": {
+                        "type": "string",
+                        "description": "Código postal de facturación del cliente"
+                      },
+                      "country": {
+                        "type": "string",
+                        "description": "País de facturación del cliente. El país debe ser enviado en código ISO alfa-2. https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
+                      }
+                    }
+                  },
+                  "products": {
+                    "type": "array",
+                    "description": "Lista de productos de la suscripción",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "id del producto. Lo puedes obtener consultando el endpoint *productos*"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Cantidad del producto."
+                        },
+                        "subscription_period_interval": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Intervalo de la suscripción. Lo puedes obtener consultando el endpoint *productos* en la información de los planes de suscripción"
+                        },
+                        "subscription_period": {
+                          "type": "string",
+                          "minimum": 1,
+                          "description": "Periodo de la suscripción. Lo puedes obtener consultando el endpoint *productos* en la información de los planes de suscripción"
+                        },
+                        "subscription_price": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Precio de la suscripción. Lo puedes obtener consultando el endpoint *productos* en la información de los planes de suscripción"
+                        }
+                      }
+                    }
+                  },
+                  "payment": {
+                    "type": "object",
+                    "description": "Información del pago de la suscripción",
+                    "properties": {
+                      "cardNumber": {
+                        "type": "string",
+                        "description": "Número de la tarjeta de crédito del cliente"
+                      },
+                      "month": {
+                        "type": "string",
+                        "description": "Mes de vencimiento de la tarjeta de crédito del cliente"
+                      },
+                      "year": {
+                        "type": "string",
+                        "description": "Año de vencimiento de la tarjeta de crédito del cliente. Debe tener dos dígitos. Por ejemplo, una tarjeta que vence en el año *2025*, el año de vencimiento debe ser enviado como *25*"
+                      },
+                      "cardCvc": {
+                        "type": "string",
+                        "description": "Código de seguridad de la tarjeta de crédito del cliente"
+                      },
+                      "cardtoken": {
+                        "type": "integer",
+                        "description": "ID del token de la tarjeta de crédito almacenado en Treli. Solo si el pago se realiza con un token de tarjeta de crédito. Puedes listar los tokens con el endpoint [listar tokens](https://treli.readme.io/reference/get_cards-get-tokens) y enviar la posición del token que te retorna el json."
+                      },
+                      "gateway": {
+                        "type": "string",
+                        "description": "ID de la pasarela de pago. Puedes consultar las pasarelas de pago habilitadas en tu cuenta aqui [aquí](https://treli.readme.io/reference/get_gateways-list). Es necesario enviar la pasarela de pago si estas creando una suscripción con un token o si tienes múltiples pasarelas de pago activas y quieres cobrar con una especifica."
+                      }
+                    }
+                  },
+                  "next_payment": {
+                    "type": "string",
+                    "description": "Fecha de próximo pago de la suscripción. Formato Y-m-d H:i:s"
+                  },
+                  "coupon_code": {
+                    "type": "string",
+                    "description": "Cupón de descuento para la suscripción. Debes tener el cupón creado en tu cuenta de Treli y debe ser de tipo \"Descuento en porcentaje % recurrente\" o \"Descuento fijo recurrente\"."
+                  },
+                  "coupon_duration": {
+                    "type": "integer",
+                    "description": "Duración del cupon en número de pagos. Por ejemplo, si \"coupon_duration\" es \"3\", el cupón sera eliminado de la suscripción despues del tercer pago\"."
+                  },
+                  "invoice_observations": {
+                    "type": "string",
+                    "description": "Comentarios u observaciones de la factura. Solo aplica si tienes habilitada la opción de generar facturas en tu proveedor contable."
+                  },
+                  "invoice_retentions": {
+                    "type": "object",
+                    "description": "Retenciones para la generación de la factura. Solo aplica si tienes habilitada la opción de generar facturas en tu proveedor contable y tienes las retenciones configuradas.",
+                    "properties": {
+                      "reteiva": {
+                        "type": "string",
+                        "description": "ID de la retención en la fuente por IVA que quieres agregar en la factura. Debes tener configuradas las rentenciones en tu cuenta de Treli."
+                      },
+                      "reteica": {
+                        "type": "string",
+                        "description": "ID de la retención en la fuente por ICA que quieres agregar en la factura. Debes tener configuradas las rentenciones en tu cuenta de Treli."
+                      },
+                      "retefte": {
+                        "type": "string",
+                        "description": "ID de la retención en la fuente por el impuesto de renta que quieres agregar en la factura. Debes tener configuradas las rentenciones en tu cuenta de Treli."
+                      }
+                    }
+                  },
+                  "meta_data": {
+                    "type": "array",
+                    "description": "Lista de meta data asociada a la suscripción",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "description": "Key de la meta data"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Valor de la meta data"
+                        }
+                      }
+                    }
+                  },
+                  "exclude_from_bulk": {
+                    "type": "boolean",
+                    "description": "Decide si la suscripción debe ser excluida de las operaciones masivas. True para excluir, false para volver a incluir."
+                  }
+                },
+                "example": {
+                  "subscription_id": 1234,
+                  "billing_address": {
+                    "first_name": "Nombre",
+                    "last_name": "Apellido",
+                    "cedula": 123456789,
+                    "address_1": "Cra 1 1 1",
+                    "city": "Barranquilla",
+                    "state": "ATL",
+                    "postcode": 80001,
+                    "country": "CO",
+                    "phone": 3111111111
+                  },
+                  "products": [
+                    {
+                      "id": "2626",
+                      "quantity": "1",
+                      "subscription_period_interval": "1",
+                      "subscription_period": "month",
+                      "subscription_price": "150000"
+                    }
+                  ],
+                  "email": "test@treli.co",
+                  "requires_shipping": false,
+                  "payment": {
+                    "cardNumber": "4242424242424242",
+                    "year": "25",
+                    "month": "12",
+                    "cardCvc": "123",
+                    "cardtoken": 0,
+                    "gateway": "wompidirect"
+                  },
+                  "next_payment": "2023-11-26 14:33:00"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions": {
+      "get": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "summary": "Listar suscripciones",
+        "description": "Obtén una lista de suscripciones con posibles filtros",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Obtén una lista de las suscripciones asociadas a un correo. Ejemplo. demo@treli.co",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_created",
+            "in": "query",
+            "description": "Obtén una lista de las suscripciones creadas en una fecha especifica. Ejemplo. 2022-11-26",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_range",
+            "in": "query",
+            "description": "Obtén una lista de las suscripciones creadas en un rango de fecha. Ejemplo. 2022-11-26...2022-12-26",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Obtén una lista de las suscripciones con un estado específico. Posibles estados \"active\", \"paused\", \"cancelled\", \"dunning\", \"in validation\", \"on hold\", \"intent\". Ejemplo. active",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subscription_id",
+            "in": "query",
+            "description": "Obtén el detalle de una suscripción específica. Este filtro sobrescribe cualquier filtro enviado anteriormente. Ejemplo. 12345",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "Un límite en el número de objetos a devolver. El límite puede oscilar entre 1 y 200, y el valor predeterminado es 50.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Un cursor para usar en la paginación. Por ejemplo, si realizas una solicitud y recibes 200 objetos pero en la respuesta obtienes has_more=true, tu siguiente solicitud puede incluir page=foo para obtener la siguiente página de la lista.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/view": {
+      "post": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "summary": "Ver suscripción",
+        "description": "Ver el detalle de la suscripción de un cliente",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "subscription_id"
+                ],
+                "properties": {
+                  "subscription_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Id de la suscripción que quieres ver"
+                  }
+                },
+                "example": {
+                  "subscription_id": 12345
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/actions": {
+      "post": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "summary": "Acciones de suscripción",
+        "description": "Pausar, cancelar o reactivar la suscripción de un cliente",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "subscription_id",
+                  "action"
+                ],
+                "properties": {
+                  "subscription_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Id de la suscripción sobre la que quieres hacer una acción."
+                  },
+                  "action": {
+                    "type": "string",
+                    "description": "Para pausar una suscripción - pause. Para activar una suscripción - activate. Para cancelar una suscripción - cancel"
+                  }
+                },
+                "example": {
+                  "subscription_id": 12345
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/report-usage": {
+      "post": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "summary": "Reportar uso",
+        "description": "Este enpoint te permite reportar el uso de una suscripción. Aplicar para suscripciones con planes configurados en Treli con la opción de \"Cobro basado en el uso\"",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "subscription_id",
+                  "usage_report"
+                ],
+                "properties": {
+                  "subscription_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Id de la suscripción a la cual le quieres reportar el uso."
+                  },
+                  "process_renewal": {
+                    "type": "boolean",
+                    "description": "Decide si quieres reportar uso únicamente o reportar uso y procesar la renovación. False para únicamente reportar uso. True para reportar uso y procesar la renovación. Valor por defecto, false."
+                  },
+                  "usage_report": {
+                    "type": "array",
+                    "description": "Lista de items dentro de la suscripción a los cuales le estas reportando el uso",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item_id": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "id del item. Lo puedes obtener consultando el endpoint *ver suscripción*. Treli tambien te retorna el id de los items dentro de la suscripción si tienes configurado el webhook \"Usage report\""
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Cantidad del uso"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "subscription_id": 12345,
+                  "process_renewal": true,
+                  "usage_report": [
+                    {
+                      "item_id": 2026,
+                      "quantity": 112
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/plans": {
+      "get": {
+        "tags": [
+          "Planes"
+        ],
+        "summary": "Listar planes",
+        "description": "Obtén una lista de todos tus planes o el detalle de uno especifico",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Id del plan que quieres obtener. Dejar vacio para obtener todos tus planes",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/plans/get": {
+      "get": {
+        "tags": [
+          "Planes"
+        ],
+        "summary": "Listar planes",
+        "description": "Obtén una lista de tus planes con posibles filtros",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Id del plan que quieres obtener.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sku",
+            "in": "query",
+            "description": "SKU del plan que quieres obtener.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filtrar planes por estado.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "inactive",
+                "private",
+                "draft"
+              ]
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "Un límite en el número de objetos a devolver. El límite puede oscilar entre 1 y 200, y el valor predeterminado es 50.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Un cursor para usar en la paginación.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "string",
+                          "description": "Página actual de la paginación.",
+                          "example": "1"
+                        },
+                        "page_size": {
+                          "type": "integer",
+                          "description": "Número de resultados obtenidos.",
+                          "example": "50"
+                        }
+                      }
+                    },
+                    "results": {
+                      "type": "array",
+                      "description": "Listado de planes.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "ID del plan.",
+                            "example": 25462
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Nombre del plan.",
+                            "example": "Nombre de prueba"
+                          },
+                          "sku": {
+                            "type": "string",
+                            "description": "SKU del plan.",
+                            "example": "123"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "Descripción del plan.",
+                            "example": "Descripción de prueba"
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "Estado del plan.",
+                            "example": "active"
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Tipo de plan.",
+                            "example": "recurring_service"
+                          },
+                          "plans": {
+                            "type": "array",
+                            "description": "Lista de planes de suscripción.",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "interval": {
+                                  "type": "string",
+                                  "description": "Intervalo de renovación del plan.",
+                                  "example": "1"
+                                },
+                                "period": {
+                                  "type": "string",
+                                  "description": "Periodo de renovación del plan.",
+                                  "example": "month"
+                                },
+                                "pricing_model": {
+                                  "type": "string",
+                                  "description": "Modelo de precios del plan.",
+                                  "example": "standard"
+                                },
+                                "price": {
+                                  "type": "string",
+                                  "description": "Precio del plan en la moneda base de tu cuenta de Treli.",
+                                  "example": "50000"
+                                },
+                                "trial": {
+                                  "type": "object",
+                                  "description": "Información de la prueba gratuita.",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "description": "Tipo de prueba gratuita. \"duration\" para una prueba gratuita de duración fija, \"month_day\" para una prueba gratuita que finaliza en un específico del mes.",
+                                      "example": "month_day"
+                                    },
+                                    "month_day": {
+                                      "type": "string",
+                                      "description": "Si el tipo de prueba gratuita es \"month_day\", día del mes en el que finaliza la prueba gratuita.",
+                                      "example": "15"
+                                    },
+                                    "period": {
+                                      "type": "string",
+                                      "description": "Si el tipo de prueba gratuita es \"duration\", periodo de duración de la prueba gratuita.",
+                                      "example": "day"
+                                    },
+                                    "length": {
+                                      "type": "string",
+                                      "description": "Si el tipo de prueba gratuita es \"duration\", duración de la prueba gratuita.",
+                                      "example": "30"
+                                    }
+                                  }
+                                },
+                                "sign_up_fee": {
+                                  "type": "string",
+                                  "description": "Cuota de inscripción del plan en la moneda base de tu cuenta de Treli",
+                                  "example": "100000"
+                                },
+                                "commitment_period": {
+                                  "type": "string",
+                                  "description": "Período de permanencia del plan.",
+                                  "example": "12"
+                                },
+                                "multi_currency_prices": {
+                                  "type": "object",
+                                  "description": "Precios en múltiples monedas. Si el plan no tiene precios en múltiples monedas, se retorna \"null\" en lugar de un objeto.",
+                                  "properties": {
+                                    "USD": {
+                                      "type": "string",
+                                      "description": "Precio en dólares.",
+                                      "example": "123"
+                                    }
+                                  }
+                                },
+                                "multi_currency_signup_fees": {
+                                  "type": "object",
+                                  "description": "Cuotas de inscripción en múltiples monedas. Si el plan no tiene cuotas de inscripción en múltiples monedas, se retorna \"null\" en lugar de un objeto.",
+                                  "properties": {
+                                    "USD": {
+                                      "type": "string",
+                                      "description": "Precio en dólares.",
+                                      "example": "100"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "_links": {
+                      "type": "object",
+                      "properties": {
+                        "self": {
+                          "type": "object",
+                          "properties": {
+                            "href": {
+                              "type": "string",
+                              "description": "URL de la página actual.",
+                              "example": "https://test.treli.co/wp-json/api/plans/get?page_size=4&page=1&status=active"
+                            }
+                          }
+                        },
+                        "next": {
+                          "type": "object",
+                          "properties": {
+                            "href": {
+                              "type": "string",
+                              "description": "URL de la siguiente página.",
+                              "example": "https://test.treli.co/wp-json/api/plans/get?page_size=4&page=2&status=active"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plans/create": {
+      "post": {
+        "tags": [
+          "Planes"
+        ],
+        "summary": "Crear una plan",
+        "description": "Crear una plan",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "product_type",
+                  "subs_plans"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nombre del plan"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Descripción del plan"
+                  },
+                  "sku": {
+                    "type": "string",
+                    "description": "SKU/ID del plan"
+                  },
+                  "trackqty": {
+                    "type": "boolean",
+                    "description": "Decide si quieres activar la gestión y seguimiento de inventario para este plan"
+                  },
+                  "inventory": {
+                    "type": "integer",
+                    "description": "Número de únidades disponibles para este plan. Solo tiene efecto si activaste la gestion gestión y seguimiento de inventario"
+                  },
+                  "stockstatus": {
+                    "type": "string",
+                    "description": "Si no la gestión y seguimiento, puedes definir si este plan esta disponible o agotado. \"instock\" para disponible, \"outofstock\" para agotado"
+                  },
+                  "image_url": {
+                    "type": "string",
+                    "description": "URL de la imagen para este plan. Posibles extensiones jpg, jpeg, gif y png"
+                  },
+                  "productstatus": {
+                    "type": "string",
+                    "description": "Define el estado del plan. \"active\", \"draft\" o \"private\""
+                  },
+                  "product_type": {
+                    "type": "string",
+                    "description": "Define el tipo de plan. \"subsproduct, para un producto recurrente\", \"membership, para un membresía\" o \"service, para un servicio recurrente\""
+                  },
+                  "subs_plans": {
+                    "type": "array",
+                    "description": "Lista de planes de suscripción del plan",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "interval",
+                        "period",
+                        "subsprice"
+                      ],
+                      "properties": {
+                        "interval": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Intervalo de frecuencía de renovación. **obligatorio**"
+                        },
+                        "period": {
+                          "type": "string",
+                          "description": "Periodo de frecuencía de renovación. Debe ser \"day\", \"week\", \"month\", \"year\""
+                        },
+                        "subsprice": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Precio del plan"
+                        },
+                        "length": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Duracion de la suscripción. No es necesario enviar en la petición si no aplica."
+                        },
+                        "commitment_periods": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Duracion de la suscripción. No es necesario enviar en la petición si no aplica."
+                        },
+                        "has_signup_fee": {
+                          "type": "boolean",
+                          "description": "Decide si el plan tiene cuota de inscripción. No es necesario enviar en la petición si no aplica."
+                        },
+                        "signup_fee": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Precio de la cuota de inscripción. No es necesario enviar en la petición si no aplica."
+                        },
+                        "hast_trial": {
+                          "type": "boolean",
+                          "description": "Decide si el plan tiene prueba gratuita. No es necesario enviar en la petición si no aplica."
+                        },
+                        "trial_period": {
+                          "type": "string",
+                          "description": "Periodo de la prueba gratuita. Debe ser \"day\", \"week\", \"month\", \"year\". No es necesario enviar en la petición si no aplica."
+                        },
+                        "trial_length": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Duración de la prueba gratuita. No es necesario enviar en la petición si no aplica."
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "subs_plans": [
+                    {
+                      "interval": 1,
+                      "period": "month",
+                      "subsprice": 50000,
+                      "length": 5
+                    }
+                  ],
+                  "name": "Plan prueba",
+                  "description": "Descripción del plan de prueba",
+                  "sku": 12345,
+                  "trackqty": false,
+                  "image_url": "https://treli.co/wp-content/uploads/2022/10/demo_suscripcion_3-1-16-1.jpg",
+                  "productstatus": "active",
+                  "product_type": "subsproduct"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/plans/update": {
+      "post": {
+        "tags": [
+          "Planes"
+        ],
+        "summary": "Actualiza un plan",
+        "description": "Actualiza un plan de suscripción de un plan",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "subscription_plan_id",
+                  "subs_plans"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "description": "Id del plan. Lo puedes obtener conulstando el endpoint \"Listar planes\""
+                  },
+                  "subscription_plan_id": {
+                    "type": "integer",
+                    "description": "Id del plan de suscripción. Si tus planes solo tienen un plan de suscripción, puede enviar este valor como \"0\". Si tus planes tienen varios planes de suscripción, puedes consultar el endpoint \"Listar planes\" para obtener el id del plan de suscripción que quieres actualizar"
+                  },
+                  "subs_plan": {
+                    "type": "object",
+                    "description": "Lista de planes de suscripción del plan",
+                    "required": [
+                      "interval",
+                      "period",
+                      "subsprice"
+                    ],
+                    "properties": {
+                      "interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Intervalo de frecuencía de renovación. **obligatorio**"
+                      },
+                      "period": {
+                        "type": "string",
+                        "description": "Periodo de frecuencía de renovación. Debe ser \"day\", \"week\", \"month\", \"year\""
+                      },
+                      "subsprice": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Precio del plan"
+                      },
+                      "length": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Duracion de la suscripción. No es necesario enviar en la petición si no aplica."
+                      },
+                      "commitment_periods": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Duracion de la suscripción. No es necesario enviar en la petición si no aplica."
+                      },
+                      "has_signup_fee": {
+                        "type": "boolean",
+                        "description": "Decide si el plan tiene cuota de inscripción. No es necesario enviar en la petición si no aplica."
+                      },
+                      "signup_fee": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Precio de la cuota de inscripción. No es necesario enviar en la petición si no aplica."
+                      },
+                      "hast_trial": {
+                        "type": "boolean",
+                        "description": "Decide si el plan tiene prueba gratuita. No es necesario enviar en la petición si no aplica."
+                      },
+                      "trial_period": {
+                        "type": "string",
+                        "description": "Periodo de la prueba gratuita. Debe ser \"day\", \"week\", \"month\", \"year\". No es necesario enviar en la petición si no aplica."
+                      },
+                      "trial_length": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Duración de la prueba gratuita. No es necesario enviar en la petición si no aplica."
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "subs_plan": {
+                    "interval": 1,
+                    "period": "month",
+                    "subsprice": 50000
+                  },
+                  "id": 2026,
+                  "subscription_plan_id": 0
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/cards/add-token": {
+      "post": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Agregar token",
+        "description": "Este endpoint te permite agregar un token de una tarjeta de crédito que tengas almacenado en tu sistema y asignarlo a un cliente",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "gateway",
+                  "token_info"
+                ],
+                "properties": {
+                  "gateway": {
+                    "type": "string",
+                    "minimum": 1,
+                    "description": "El id de la pasarela de pago a la cual quieres agregar el token. Más información [aquí](https://treli.readme.io/reference/pasarelas-de-pago)."
+                  },
+                  "token_info": {
+                    "type": "object",
+                    "required": [
+                      "email",
+                      "cardTokenId"
+                    ],
+                    "description": "Información del token de la tarjeta de crédito. Esta información puede variar según la pasarela de pago utilizada. El ejemplo a continuación es para la pasarela de pago Wompi. Más información [aquí](https://treli.readme.io/reference/pasarelas-de-pago).",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "description": "Correo electrónico del cliente"
+                      },
+                      "cardTokenId": {
+                        "type": "string",
+                        "description": "Token de la tarjeta de crédito"
+                      },
+                      "last": {
+                        "type": "string",
+                        "description": "Últimos cuatro digitos de la tarjeta de crédito"
+                      },
+                      "ctype": {
+                        "type": "string",
+                        "description": "Tipo de tarjeta de crédito"
+                      },
+                      "cexpire": {
+                        "type": "string",
+                        "description": "Fecha de expiración de la tarjeta de crédito. Formato mm/aaaa"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "gateway": "wompidirect",
+                  "token_info": {
+                    "email": "demo@treli.co",
+                    "cardTokenId": "33752",
+                    "last": "4242",
+                    "ctype": "VISA",
+                    "cexpire": "12/2025"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/cards/delete-token": {
+      "post": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Eliminar token",
+        "description": "Este endpoint te permite eliminar un token de una tarjeta de crédito de un cliente.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "gateway",
+                  "token_id"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Correo electrónico del cliente"
+                  },
+                  "gateway": {
+                    "type": "string",
+                    "description": "El id de la pasarela de pago a la cual quieres agregar el token. Más información [aquí](https://treli.readme.io/reference/pasarelas-de-pago)."
+                  },
+                  "token_id": {
+                    "type": "integer",
+                    "description": "ID del token de la tarjeta de crédito que quieres eliminar"
+                  }
+                },
+                "example": {
+                  "gateway": "wompidirect",
+                  "email": "correo@ejemplo.com",
+                  "token_id": 0
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/cards/get-tokens": {
+      "get": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Listar tokens",
+        "description": "Obtén una lista de los tokens asociados a un cliente y pasarela de pago",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email del cliente",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "gateway",
+            "in": "query",
+            "description": "Id de la pasarela de pago. Más información [aquí](https://treli.readme.io/reference/pasarelas-de-pago).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/payments/create": {
+      "post": {
+        "tags": [
+          "Pagos"
+        ],
+        "summary": "Crear un pago",
+        "description": "Crea una un pago único o una solicitud de pago asociada a una factura",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "billing_address",
+                  "requires_shipping"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Correo electrónico de tu cliente"
+                  },
+                  "billing_address": {
+                    "type": "object",
+                    "description": "Dirección de facturación de tu cliente",
+                    "properties": {
+                      "first_name": {
+                        "type": "string",
+                        "description": "Nombre de facturación del cliente"
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "description": "Apellido de facturación del cliente"
+                      },
+                      "cedula": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Cédula de facturación del cliente"
+                      },
+                      "address_1": {
+                        "type": "string",
+                        "description": "Dirección principal de facturación del cliente"
+                      },
+                      "address_2": {
+                        "type": "string",
+                        "description": "Apartamento, casa, unidad, etc de facturación del cliente"
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": "Ciudad de facturación del cliente"
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": "Departamento de facturación del cliente"
+                      },
+                      "postcode": {
+                        "type": "string",
+                        "description": "Código postal de facturación del cliente"
+                      },
+                      "country": {
+                        "type": "string",
+                        "description": "País de facturación del cliente. El país debe ser enviado en código ISO alfa-2. https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
+                      },
+                      "phone": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Teléfono de facturación del cliente. Debe contener 10 digitos."
+                      }
+                    }
+                  },
+                  "requires_shipping": {
+                    "type": "boolean",
+                    "description": "Decide si el pago tiene asociado una dirección de envío"
+                  },
+                  "manual_payment": {
+                    "type": "boolean",
+                    "description": "Decide si el pago debe ser completado por parte del cliente. Si el pago es manual (true), este request te retorna un link de pago para que redirecciones a tu cliente. Si el pago no es manual (false), debes enviar la información del método de pago."
+                  },
+                  "payment_collection": {
+                    "type": "string",
+                    "description": "Decide como quieres que Treli realice la cobranza del pago. \"now\" para crear un pago que debe ser pagado al instante y que Treli envie una notificación solicitando el pago. \"template\" para utilizar una plantilla de pago creada previamente. No aplica is \"manual_payment\" es true o false."
+                  },
+                  "payment_template": {
+                    "type": "string",
+                    "description": "Si el \"payment_collection\" es \"template\", debes enviar el id de la plantilla que quieres utilizar. Puedes consultar tus plantillas con el endpoint [listar plantillas](https://treli.readme.io/reference/get_payments-templates). No aplica is \"manual_payment\" es true o false."
+                  },
+                  "invoice_due_date": {
+                    "type": "string",
+                    "description": "Fecha de vencimiento de la factura o solicitud de pago. Formato YYYY-MM-DD."
+                  },
+                  "invoicing": {
+                    "type": "string",
+                    "description": "Decide si quieres asociar una factura a la solicitud de pago. \"connect\" para conectar una factura que ya tengas creada en tu proveedor de facturación contable y lo tengas integrado con Treli. \"upload\" para recaudar una factura de un proveedor contable que no tengas integrado a Treli. \"create\" para crear una factura en tu proveedor contable y asociarla a la solicitud de pago. Para crear una factura, debes tener integrado un proveedor contable en tu cuenta de Treli."
+                  },
+                  "connect_invoice_number": {
+                    "type": "string",
+                    "description": "Si \"invoicing\" es \"connect\", ingresa el número de una factura que ya tengas creada en tu proveedor de facturación contable. Treli descargara la factura, la enviara a tu cliente en las notificaciones de solicitud de pago. Debes tener integrado un proveedor contable en tu cuenta de Treli."
+                  },
+                  "upload_invoice_number": {
+                    "type": "string",
+                    "description": "Si \"invoicing\" es \"upload\", ingresa el número de una factura que ya tengas creada en tu proveedor de facturación contable. Usalo cuando NO tengas integrado un proveedor contable en tu cuenta de Treli y quieras recaudar una factura."
+                  },
+                  "upload_invoice_pdf_url": {
+                    "type": "string",
+                    "description": "Si \"invoicing\" es \"upload\", ingresa la URL del PDF de la factura que estas recaudando. Usalo cuando NO tengas integrado un proveedor contable en tu cuenta de Treli y quieras recaudar una factura. No es necesario si ya estas enviando la cadena en base64 del PDF de la factura."
+                  },
+                  "upload_invoice_pdf_base64": {
+                    "type": "string",
+                    "description": "Si \"invoicing\" es \"upload\", ingresa la cadena en base64 de la factura que estas recaudando. Usalo cuando NO tengas integrado un proveedor contable en tu cuenta de Treli y quieras recaudar una factura. No es necesario si ya estas enviando la URL del PDF de la factura."
+                  },
+                  "invoice_retentions": {
+                    "type": "object",
+                    "description": "Si \"invoicing\" es \"create\", agrega retenciones en la factura",
+                    "properties": {
+                      "reteiva": {
+                        "type": "string",
+                        "description": "ID de la retención en la fuente por IVA que quieres agregar en la factura. Debes tener configuradas las rentenciones en tu cuenta de Treli."
+                      },
+                      "reteica": {
+                        "type": "string",
+                        "description": "ID de la retención en la fuente por ICA que quieres agregar en la factura. Debes tener configuradas las rentenciones en tu cuenta de Treli."
+                      },
+                      "retefte": {
+                        "type": "string",
+                        "description": "ID de la retención en la fuente por el impuesto de renta que quieres agregar en la factura. Debes tener configuradas las rentenciones en tu cuenta de Treli."
+                      }
+                    }
+                  },
+                  "shipping_address": {
+                    "type": "object",
+                    "description": "Dirección de envío de tu cliente",
+                    "properties": {
+                      "first_name": {
+                        "type": "string",
+                        "description": "Nombre de facturación del cliente"
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "description": "Apellido de facturación del cliente"
+                      },
+                      "address_1": {
+                        "type": "string",
+                        "description": "Dirección principal de facturación del cliente"
+                      },
+                      "address_2": {
+                        "type": "string",
+                        "description": "Apartamento, casa, unidad, etc de facturación del cliente"
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": "Ciudad de facturación del cliente"
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": "Departamento de facturación del cliente"
+                      },
+                      "postcode": {
+                        "type": "string",
+                        "description": "Código postal de facturación del cliente"
+                      },
+                      "country": {
+                        "type": "string",
+                        "description": "País de facturación del cliente. El país debe ser enviado en código ISO alfa-2. https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
+                      }
+                    }
+                  },
+                  "products": {
+                    "type": "array",
+                    "description": "Lista de productos asociados al pago. Requerido si estas creando un pago con productos existentes en tu cuenta de Treli.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "id del producto. Lo puedes obtener consultando el endpoint *planes*"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Cantidad del producto"
+                        },
+                        "unit_price": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Precio unitario del producto"
+                        }
+                      }
+                    }
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "description": "Ingresa el valor total a pagar. Solo es necesario y válido cuando estas creando un pago sin productos."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Ingresa la descripción del pago. Solo y válido cuando estas creando un pago sin productos."
+                  },
+                  "payment": {
+                    "type": "object",
+                    "description": "Información del método de pago",
+                    "properties": {
+                      "cardNumber": {
+                        "type": "string",
+                        "description": "Número de la tarjeta de crédito del cliente"
+                      },
+                      "month": {
+                        "type": "string",
+                        "description": "Mes de vencimiento de la tarjeta de crédito del cliente"
+                      },
+                      "year": {
+                        "type": "string",
+                        "description": "Año de vencimiento de la tarjeta de crédito del cliente. Debe tener dos dígitos. Por ejemplo, una tarjeta que vence en el año *2025*, el año de vencimiento debe ser enviado como *25*"
+                      },
+                      "cardCvc": {
+                        "type": "string",
+                        "description": "Código de seguridad de la tarjeta de crédito del cliente"
+                      },
+                      "cardtoken": {
+                        "type": "integer",
+                        "description": "ID del token de la tarjeta de crédito almacenado en Treli. Puedes listar los tokens con el endpoint [listar tokens](https://treli.readme.io/reference/get_cards-get-tokens) y enviar la posición del token que te retorna el json."
+                      },
+                      "gateway": {
+                        "type": "string",
+                        "description": "ID de la pasarela de pago. Puedes consultar los IDs de las pasarelas de pago [aquí](https://treli.readme.io/reference/pasarelas-de-pago). Es necesario enviar la pasarela de pago si estas creando un pago con un token de tarjeta de crédito o si tienes múltiples pasarelas de pago activas y quieres cobrar con una especifica."
+                      },
+                      "payer_address": {
+                        "type": "object",
+                        "description": "Dirección de facturación del pagador. Usalo cuando la dirección de facturación del pago es distinta a la dirección del pagador.",
+                        "properties": {
+                          "first_name": {
+                            "type": "string",
+                            "description": "Nombre del pagador"
+                          },
+                          "last_name": {
+                            "type": "string",
+                            "description": "Apellido del pagador"
+                          },
+                          "id_type": {
+                            "type": "string",
+                            "description": "Tipo de identificación del pagador. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/colombia)"
+                          },
+                          "identification": {
+                            "type": "string",
+                            "description": "Número de identificación del pagador"
+                          },
+                          "address_1": {
+                            "type": "string",
+                            "description": "Dirección principal del pagador"
+                          },
+                          "address_2": {
+                            "type": "string",
+                            "description": "Apartamento, casa, unidad, etc del pagador"
+                          },
+                          "city": {
+                            "type": "string",
+                            "description": "Ciudad del pagador. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/colombia#ciudades)"
+                          },
+                          "state": {
+                            "type": "string",
+                            "description": "Departamento del pagador. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/colombia#departamentos)"
+                          },
+                          "country": {
+                            "type": "string",
+                            "description": "País del pagador. El país debe ser enviado en código ISO alfa-2. Obtén los valores aceptados [aquí](https://treli.readme.io/docs/general)"
+                          },
+                          "phone": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "description": "Teléfono de facturación del pagador. Debe contener 10 digitos."
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "currency": {
+                    "type": "string",
+                    "description": "Código de la moneda en tres letras (ISO 4217). Debes tener la moneda habilitada en tu cuenta de Treli. Este campo es opcional, si envías este campo vacío, se utiliza la moneda base configurada en tu cuenta de Treli."
+                  },
+                  "coupon_code": {
+                    "type": "string",
+                    "description": "Cupón de descuento para el pago. Debes tener el cupón creado en tu cuenta de Treli."
+                  },
+                  "invoice_observations": {
+                    "type": "string",
+                    "description": "Comentarios u observaciones de la factura. Solo aplica si tienes habilitada la opción de generar facturas en tu proveedor contable."
+                  },
+                  "credit_balance": {
+                    "type": "integer",
+                    "description": "Ingresa un saldo a favor que se debe aplicar a la solicitud de pago."
+                  },
+                  "meta_data": {
+                    "type": "array",
+                    "description": "Lista de meta data asociada al pago",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "description": "Key de la meta data"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Valor de la meta data"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "billing_address": {
+                    "first_name": "Nombre",
+                    "last_name": "Apellido",
+                    "cedula": 123456789,
+                    "address_1": "Cra 1 1 1",
+                    "city": "Barranquilla",
+                    "state": "ATL",
+                    "postcode": 80001,
+                    "country": "CO",
+                    "phone": 3111111111
+                  },
+                  "products": [
+                    {
+                      "id": "2026",
+                      "quantity": "1",
+                      "unit_price": "150000"
+                    }
+                  ],
+                  "payment": {
+                    "cardNumber": "4575623182290326",
+                    "year": "25",
+                    "month": "12",
+                    "cardCvc": "123",
+                    "cardtoken": 1,
+                    "gateway": "wompidirect"
+                  },
+                  "email": "test@treli.co",
+                  "requires_shipping": false,
+                  "manual_payment": false,
+                  "currency": "COP",
+                  "meta_data": [
+                    {
+                      "key": "user_id",
+                      "value": "36"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/payments/update-status": {
+      "post": {
+        "tags": [
+          "Pagos"
+        ],
+        "summary": "Actualizar estado de un pago",
+        "description": "Cambia el estado de un pago a anulado o aprobado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "payment_id": {
+                    "type": "integer",
+                    "description": "Id del pago sobre el cual quieres cambiar el estado."
+                  },
+                  "invoice_number": {
+                    "type": "integer",
+                    "description": "Número de la factura asociada al pago sobre el cual quieres cambiar el estado. No aplica si ya estas utilizando \"payment_id\"."
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "Para aprobar un pago - \"approved\". Para anular un pago - \"voided\""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/payments/update": {
+      "post": {
+        "tags": [
+          "Pagos"
+        ],
+        "summary": "Actualizar un pago",
+        "description": "Actualiza un pago",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "payment_id": {
+                    "type": "integer",
+                    "description": "Id del pago que quieres actualizar."
+                  },
+                  "invoice_number": {
+                    "type": "string",
+                    "description": "Número de la factura asociada al pago que quieres actualizar. No aplica si ya estas utilizando \"payment_id\"."
+                  },
+                  "invoice_due_date": {
+                    "type": "string",
+                    "description": "Fecha de vencimiento de la factura asociada a la solicitud de pago. Formato yyyy-MM-dd."
+                  },
+                  "credit_balance": {
+                    "type": "integer",
+                    "description": "Ingresa un saldo a favor que se debe aplicar a la solicitud de pago."
+                  },
+                  "products": {
+                    "type": "array",
+                    "description": "Lista de productos para actualizar en el pago. Si el id del producto ya existe en el pago, se actualiza la cantidad y el precio unitario. Si el id del producto no existe en el pago, se agrega el producto al pago.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "id del producto. Debe estar previamente creado en tu cuenta de Treli."
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Cantidad del producto"
+                        },
+                        "unit_price": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Precio unitario del producto"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/payments/list": {
+      "get": {
+        "tags": [
+          "Pagos"
+        ],
+        "summary": "Listar pagos",
+        "description": "Obtén una lista de pagos con posibles filtros",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Obtén una lista de los pagos asociados a un correo. Ejemplo. demo@treli.co",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customer_identification",
+            "in": "query",
+            "description": "Obtén una lista de los pagos asociados un número de identificación de un cliente. Ejemplo. 1234567890",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_created",
+            "in": "query",
+            "description": "Obtén una lista de los pagos creados en una fecha especifica. Ejemplo. 2022-11-26",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_range",
+            "in": "query",
+            "description": "Obtén una lista de los pagos creados en un rango de fecha. Ejemplo. 2022-11-26...2022-12-26",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subscription_id",
+            "in": "query",
+            "description": "Obtén una lista de los pagos asociados a una suscripción. Este filtro sobrescribe cualquier filtro enviado anteriormente. Ejemplo. 12345",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "payment_id",
+            "in": "query",
+            "description": "Obtén el detalle de un pago específico. Este filtro sobrescribe cualquier filtro enviado anteriormente. Ejemplo. 12345",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collection_template_id",
+            "in": "query",
+            "description": "Obtén una lista de los pagos asociados una plantilla de cobro.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "Un límite en el número de objetos a devolver. El límite puede oscilar entre 1 y 200, y el valor predeterminado es 50.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Un cursor para usar en la paginación. Por ejemplo, si realizas una solicitud y recibes 200 objetos pero en la respuesta obtienes has_more=true, tu siguiente solicitud puede incluir page=foo para obtener la siguiente página de la lista.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/payments/templates": {
+      "get": {
+        "tags": [
+          "Pagos"
+        ],
+        "summary": "Listar plantillas de pago",
+        "description": "Obtén una lista de tus plantillas de pago",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/gateways/list": {
+      "get": {
+        "tags": [
+          "Pasarelas"
+        ],
+        "summary": "Listar pasarelas",
+        "description": "Listar pasarelas y métodos de pago disponibles en tu cuenta de Treli",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Id de la pasarela que quieres consultar. Puedes consultar los IDs de las pasarelas de pago [aquí](https://treli.readme.io/reference/pasarelas-de-pago). Dejar vacio para obtener información sobre todas tus pasarelas",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/portal/sessions/create": {
+      "post": {
+        "tags": [
+          "Portal de cliente"
+        ],
+        "summary": "Crear una sesión de portal",
+        "description": "Con el portal del cliente, puedes permitir a tus clientes gestionar sus suscripciones, métodos de pago y pagar facturas sin necesidad de desarrollar un portal tú mismo. Después de configurar e integrar el portal, los clientes son redirigidos a un portal de marca compartida donde pueden administrar su cuenta según las funcionalidades que configures",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "customer_email"
+                ],
+                "properties": {
+                  "customer_email": {
+                    "type": "string",
+                    "description": "Correo electrónico de un cliente existente."
+                  },
+                  "return_url": {
+                    "type": "string",
+                    "description": "URL para redirigir a los clientes a cuando hacen clic en el enlace del portal para cerrar su sesión."
+                  },
+                  "forward": {
+                    "type": "string",
+                    "description": "Enlace directo que te permite redirigir a una página específica del portal cuando el cliente es autenticado. Conoce más [aquí](https://treli.readme.io/reference/configura-el-portal-de-clientes-con-la-api#opcional-enlaces-directos) sobre los valores permitidos.",
+                    "enum": [
+                      "customer_update_address",
+                      "customer_invoices",
+                      "subscription_update_payment"
+                    ]
+                  },
+                  "subscription_id": {
+                    "type": "integer",
+                    "description": "Id de suscripción para actualización de método de pago. Únicamente necesario si estás creando una sesión de portal para que tu cliente pueda actualizar el método de pago de una suscripción, utilizando \"forward\"=\"subscription_update_payment\"."
+                  }
+                },
+                "example": {
+                  "customer_email": "correo@dominio.com",
+                  "return_url": "https://example.com",
+                  "forward": "customer_invoices"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Estado de la respuesta.",
+                      "example": "success"
+                    },
+                    "customer_id": {
+                      "type": "string",
+                      "description": "ID del cliente.",
+                      "example": "cus_wpydsdf3s3f8s"
+                    },
+                    "created": {
+                      "type": "integer",
+                      "description": "Marca de tiempo de creación.",
+                      "example": 1719858585
+                    },
+                    "valid_until": {
+                      "type": "integer",
+                      "description": "Marca de tiempo hasta cuando es válida la sesión.",
+                      "example": 1719860385
+                    },
+                    "return_url": {
+                      "type": "string",
+                      "description": "URL para redirigir a los clientes al cerrar su sesión.",
+                      "example": "https://treli.co"
+                    },
+                    "forward": {
+                      "type": "string",
+                      "description": "Enlace directo configurado.",
+                      "example": "customer_invoices"
+                    },
+                    "auth_url": {
+                      "type": "string",
+                      "description": "URL de autenticación.",
+                      "example": "https://portal.treli.co/p/authenticate?forward=customer_invoices&token={{TOKEN}}&customer_id=cus_wpydsdf3s3f8s"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

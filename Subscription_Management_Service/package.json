@@ -8,6 +8,7 @@
     "dev": "nodemon ./src/server.js"
   },
   "dependencies": {
+    "@api/treli": "file:.api/apis/treli",
     "axios": "^1.7.4",
     "express": "4.19.2"
   },

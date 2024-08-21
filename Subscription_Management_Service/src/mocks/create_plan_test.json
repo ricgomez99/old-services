@@ -1,0 +1,12 @@
+{
+  "name": "test plan",
+  "description": "Descripción del plan de prueba",
+  "sku": 12345,
+  "trackqty": true,
+  "inventory": 20,
+  "stockstatus": "instock",
+  "image_url": "https://treli.co/wp-content/uploads/2022/10/demo_suscripcion_3-1-16-1.jpg",
+  "productstatus": "active",
+  "product_type": "subsproduct",
+  "subs_plans": [{ "interval": 1, "period": "month", "subsprice": 50000, "length": 5 }]
+}

@@ -1,0 +1,25 @@
+{
+  "billing_address": {
+    "first_name": "Nombre",
+    "last_name": "Apellido",
+    "cedula": 123456789,
+    "address_1": "Cra 1 1 1",
+    "city": "Barranquilla",
+    "state": "ATL",
+    "postcode": 80001,
+    "country": "CO",
+    "phone": 3111111111
+  },
+  "requires_shipping": false,
+  "payment": {
+    "cardNumber": "4575623182290326",
+    "month": "12",
+    "year": "25",
+    "cardCvc": "123",
+    "cardtoken": 1,
+    "gateway": "wompidirect"
+  },
+  "email": "test@treli.co",
+  "products": [{ "id": 806862, "quantity": 1, "unit_price": 150000 }],
+  "currency": "COP"
+}

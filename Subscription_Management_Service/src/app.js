@@ -1,12 +1,15 @@
 import express, { json } from 'express'
 import dotenv from 'dotenv'
+import { createPaymentsRouter } from './routes/payments/paymentsRouter.js'
 
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT ?? 3000
 
-export const initApp = () => {
+export const initApp = ({ paymentsModel }) => {
   app.use(json())
+  app.use('/billing', createPaymentsRouter({ paymentsModel }))
+
   app.disable('x-powered-by')
   app.options('*')
 

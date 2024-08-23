@@ -48,8 +48,8 @@ export class PaymentsController {
   }
 
   getPaymentsByUserEmail = async (req, res) => {
-    const { email } = req.query
-    const payments = await this.getPaymentsByUserEmail(email)
+    const { email } = req?.params
+    const payments = await this.paymentsModel.getPaymentsByUserEmail(email)
 
     if (!payments) {
       return res.status(500).json({ message: 'unable to find user payments' })

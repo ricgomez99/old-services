@@ -7,7 +7,7 @@ export const createPaymentsRouter = ({ paymentsModel }) => {
 
   router.get('/', controller.getPayments)
   router.get('/:id', controller.getPaymentById)
-  router.get('/?email', controller.getPaymentsByUserEmail)
+  router.get('/user/:email', controller.getPaymentsByUserEmail)
   router.get('/payment_templates', controller.getPaymentTemplates)
   router.post('/', controller.createPayment)
   router.post('/update_payment_status', controller.updatePaymentStatus)

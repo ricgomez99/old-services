@@ -1,5 +1,6 @@
 import express, { json } from 'express'
 import dotenv from 'dotenv'
+import { corsMiddleware } from './middlewares/cors.js'
 import { createPaymentsRouter } from './routes/payments/paymentsRouter.js'
 import { createPlansRouter } from './routes/plans/plansRouter.js'
 import { createSubsRouter } from './routes/subscriptions/subscriptionsRouter.js'
@@ -10,6 +11,7 @@ const PORT = process.env.PORT ?? 3000
 
 export const initApp = ({ paymentsModel, plansModel, subscriptionsModel }) => {
   app.use(json())
+  app.use(corsMiddleware())
   app.use('/billing', createPaymentsRouter({ paymentsModel }))
   app.use('/plans', createPlansRouter({ plansModel }))
   app.use('/subscriptions', createSubsRouter({ subscriptionsModel }))

@@ -30,10 +30,10 @@ export class PlansModel {
     }
   }
 
-  static async updatePlan({ id, data }) {
-    if (!id) throw new Error('invalid Id')
+  static async updatePlan(body) {
+    if (!body) throw new Error('invalid data')
     try {
-      const response = await axios.post(`${url}/plans/update`, data, postOptions)
+      const response = await axios.post(`${url}/plans/update`, body, postOptions)
       return response
     } catch (error) {
       if (error instanceof Error) {

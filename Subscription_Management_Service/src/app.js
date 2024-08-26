@@ -6,10 +6,10 @@ import { createPlansRouter } from './routes/plans/plansRouter.js'
 import { createSubsRouter } from './routes/subscriptions/subscriptionsRouter.js'
 
 dotenv.config()
-const app = express()
 const PORT = process.env.PORT ?? 3000
 
 export const initApp = ({ paymentsModel, plansModel, subscriptionsModel }) => {
+  const app = express()
   app.use(json())
   app.use(corsMiddleware())
   app.use('/billing', createPaymentsRouter({ paymentsModel }))
@@ -26,4 +26,6 @@ export const initApp = ({ paymentsModel, plansModel, subscriptionsModel }) => {
   app.listen(PORT, () => {
     console.log(`App listening On: http://localhost:${PORT}`)
   })
+
+  return app
 }

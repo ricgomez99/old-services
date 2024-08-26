@@ -11,19 +11,20 @@ export class PlansController {
       return res.status(500).json({ message: 'unable to create plan' })
     }
 
-    return res.status(200).json({ message: 'plan created successfully!' })
+    return res.status(201).json({ message: 'plan created successfully!' })
   }
 
   updatePlan = async (req, res) => {
     const { id } = req.params
     const data = req.body
-    const updated = await this.plansModel.updatePlan({ id, data })
+    const body = { subs_plan: { ...data }, id: id, subscription_plan_id: 0 }
+    const updated = await this.plansModel.updatePlan(body)
 
     if (!updated) {
       return res.status(500).json({ message: 'unable to update plan' })
     }
 
-    return res.status(200).json({ message: 'plan updated successfully' })
+    return res.status(200).json({ message: 'plan updated successfully!' })
   }
 
   getPlans = async (req, res) => {
@@ -39,7 +40,7 @@ export class PlansController {
     const { id } = req.params
     const plan = await this.plansModel.getPlansById(id)
 
-    if (!plan) {
+    if (!plan || plan.message === 'No se encontraron productos') {
       return res.status(500).json({ message: 'failed finding plan' })
     }
 

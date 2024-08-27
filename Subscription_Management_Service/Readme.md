@@ -2,36 +2,37 @@
 
 ## Overview
 
-- This API manages subscriptions, payments, and plans by consuming data from the Treli API. It provides endpoints to retrieve, create, and update payment records, plans, and subscriptions.
++ This API manages subscriptions, payments, and plans by consuming data from the Treli API. It provides endpoints to retrieve, create, and update payment records, plans, and subscriptions.
 
 ## Routes and Endpoints
 
 ### Payments
 
-- Get All Payments
++ Get All Payments
   `GET /billing`
 
-- Get Payment by ID
++ Get Payment by ID
   `GET /billing/:id`
 
-- Get Payments by User Email
++ Get Payments by User Email
   `GET /billing/user/:email`
 
-- Get Payment Templates
++ Get Payment Templates
   `GET /billing/payment_templates`
 
-- Create a Payment
++ Create a Payment
   `POST /billing`
 
-- Update Payment Status
++ Update Payment Status
   `POST /billing/update_payment_status`
   **Request Body:**
 
-````json
+```json
 {
   "payment_id": 892561,
   "status": "approved"
-}```
+}
+```
 
 + Update Payment Data
 `POST /billing/update_payment/:id`
@@ -46,7 +47,8 @@
       "unit_price": 130000
     }
   ]
-}```
+}
+```
 
 For more details, refer to the Treli API docs. [update payment](https://treli.readme.io/reference/post_payments-update-status)
 
@@ -63,14 +65,15 @@ For detailed information, consult the Treli API docs.[create a plan](https://tre
 
 + Update a Plan
 `POST /plans/update/:id`
-Request Body:
+**Request Body**:
 
 ```json
 {
   "interval": 1,
   "period": "month",
   "subsprice": 50000
-}```
+}
+```
 For more details, refer to the Treli API docs: [update plan](https://treli.readme.io/reference/post_plans-create)
 
 ### Subscriptions
@@ -115,4 +118,3 @@ For more details, refer to the Treli API docs.[update a subscription](https://tr
 
 ## Testing
 + The API includes tests for payments, plans, and subscriptions endpoints. Basic tests for the subscriptions endpoint are implemented, with additional tests planned for future updates.
-````

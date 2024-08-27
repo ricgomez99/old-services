@@ -12,7 +12,7 @@ export class SubscriptionsController {
       return res.status(500).json({ message: 'unable to create subscription' })
     }
 
-    return res.status(200).json({ message: 'subscription created successfully!' })
+    return res.status(201).json({ message: 'subscription created successfully!' })
   }
 
   updateSubscription = async (req, res) => {
@@ -33,7 +33,7 @@ export class SubscriptionsController {
     const body = { subscription_id: id }
     const subscription = await this.subscriptionsModel.getSubscriptionById(body)
 
-    if (!subscription) {
+    if (!subscription || subscription.code === 'no_subscription') {
       return res.status(500).json({ message: 'failed getting subscription' })
     }
 
@@ -44,7 +44,7 @@ export class SubscriptionsController {
     const { email } = req.params
     const subscription = await this.subscriptionsModel.getSubscriptionByUserEmail(email)
 
-    if (!subscription) {
+    if (!subscription || subscription.code === 'no_subscriptions') {
       return res.status(500).json({ message: 'unable to find subscription' })
     }
 
@@ -63,7 +63,7 @@ export class SubscriptionsController {
   subscriptionActions = async (req, res) => {
     const { action, id } = req.params
     if (action !== 'activate' && action !== 'cancel') {
-      return res.status(401).json({ message: 'Invalid action value, it must be `activate` or `cancel`' })
+      return res.status(400).json({ message: 'Invalid action value, it must be `activate` or `cancel`' })
     }
 
     const body = { subscription_id: id, action: action }

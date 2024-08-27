@@ -44,8 +44,8 @@ export class PaymentsModel {
       }
     }
   }
-  static async updatePaymentById({ id, data }) {
-    if (!id && !data) {
+  static async updatePaymentById({ body, id }) {
+    if (!body) {
       throw new Error('not valid data for updating')
     }
 
@@ -54,7 +54,7 @@ export class PaymentsModel {
       const { status } = results[0]
       if (status !== 'Pendiente') return null
 
-      const updated = await axios.post(`${url}/payments/update`, data, {
+      const updated = await axios.post(`${url}/payments/update`, body, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
